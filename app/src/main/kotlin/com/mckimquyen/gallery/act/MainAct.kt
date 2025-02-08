@@ -317,7 +317,11 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
             if (mCurrentPathPrefix.isEmpty()) {
                 super.onBackPressed()
             } else {
-                mOpenedSubfolders.removeLast()
+                val lastElement = mOpenedSubfolders.lastOrNull()
+                lastElement?.let {
+                    mOpenedSubfolders.remove(it)
+                }
+
                 mCurrentPathPrefix = mOpenedSubfolders.last()
                 setupAdapter(mDirs)
             }

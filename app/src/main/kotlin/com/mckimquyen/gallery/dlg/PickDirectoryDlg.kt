@@ -251,7 +251,10 @@ class PickDirectoryDlg(
             if (currentPathPrefix.isEmpty()) {
                 dialog?.dismiss()
             } else {
-                openedSubfolders.removeLast()
+                val lastElement = openedSubfolders.lastOrNull()
+                lastElement?.let {
+                    openedSubfolders.remove(it)
+                }
                 currentPathPrefix = openedSubfolders.last()
                 gotDirectories(allDirectories)
             }
