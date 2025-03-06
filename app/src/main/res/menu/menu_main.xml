@@ -73,11 +73,11 @@
         android:icon="@drawable/ic_column_count_vector"
         android:title="@string/column_count"
         app:showAsAction="never" />
-<!--    <item-->
-<!--        android:id="@+id/about"-->
-<!--        android:icon="@drawable/ic_info_vector"-->
-<!--        android:title="@string/about"-->
-<!--        app:showAsAction="ifRoom" />-->
+    <!--    <item-->
+    <!--        android:id="@+id/about"-->
+    <!--        android:icon="@drawable/ic_info_vector"-->
+    <!--        android:title="@string/about"-->
+    <!--        app:showAsAction="ifRoom" />-->
     <item
         android:id="@+id/moreAppsFromUs"
         android:icon="@drawable/ic_google_play_vector"
@@ -101,11 +101,22 @@
     <item
         android:id="@+id/github"
         android:icon="@drawable/ic_google_play_vector"
-        android:title="@string/github"
+        android:title="Source code (This version)"
         app:showAsAction="never" />
     <item
-        android:id="@+id/serviceTester"
+        android:id="@+id/githubOriginal"
         android:icon="@drawable/ic_google_play_vector"
-        android:title="@string/service_tester"
+        android:title="Source code (Original version)"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/license"
+        android:icon="@drawable/ic_google_play_vector"
+        android:title="License"
+        app:showAsAction="never" />
+    <!--    <item-->
+    <!--        android:id="@+id/serviceTester"-->
+    <!--        android:icon="@drawable/ic_google_play_vector"-->
+    <!--        android:title="@string/service_tester"-->
+    <!--        app:showAsAction="never" />-->
 </menu>

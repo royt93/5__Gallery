@@ -436,12 +436,20 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
                 }
 
                 R.id.github -> {
-                    openUrlInBrowser("https://github.com/gj-loitp/5__Gallery")
+                    openUrlInBrowser("https://github.com/royt93/5__Gallery")
                 }
 
-                R.id.serviceTester -> {
-                    openUrlInBrowser("https://github.com/gj-loitp/20-TESTER-FOR-CLOSED-TESTING")
+                R.id.githubOriginal -> {
+                    openUrlInBrowser("https://github.com/FossifyOrg/Gallery")
                 }
+
+                R.id.license -> {
+                    openUrlInBrowser("https://raw.githubusercontent.com/royt93/5__Gallery/refs/heads/master/LICENSE")
+                }
+
+//                R.id.serviceTester -> {
+//                    openUrlInBrowser("https://github.com/gj-loitp/20-TESTER-FOR-CLOSED-TESTING")
+//                }
 
                 R.id.settings -> launchSettings()
 //                R.id.about -> launchAbout()

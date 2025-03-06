@@ -20,9 +20,9 @@ android {
         applicationId = "com.mckimquyen.gallery"
         minSdk = 23
         targetSdk = 35
-        versionName = "2025.02.08"
-        versionCode = 20250208
-        setProperty("archivesBaseName", "Cat Gallery-$versionCode")
+        versionName = "2025.03.06"
+        versionCode = 20250306
+        setProperty("archivesBaseName", "Gallery-$versionCode")
     }
 
 //    signingConfigs {
