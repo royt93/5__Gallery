@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -20,8 +21,8 @@ android {
         applicationId = "com.mckimquyen.gallery"
         minSdk = 23
         targetSdk = 35
-        versionName = "2025.03.06"
-        versionCode = 20250306
+        versionName = "2025.03.23"
+        versionCode = 20250323
         setProperty("archivesBaseName", "Gallery-$versionCode")
     }
 
@@ -110,7 +111,7 @@ android {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_17)
     }
 
     lint {
@@ -153,7 +154,7 @@ dependencies {
     api(libs.zjupure.webpdecoder)
     api(libs.bundles.room)
     //noinspection UseTomlInstead
-    api("com.applovin:applovin-sdk:13.0.1")
+    api("com.applovin:applovin-sdk:13.1.0")
     ksp(libs.androidx.room.compiler)
     //noinspection UseTomlInstead
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
