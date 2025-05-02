@@ -1039,7 +1039,8 @@
                     android:id="@+id/settingApplovin"
                     style="@style/SettingsHolderTextViewOneLinerStyle"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <org.fossify.commons.views.MyTextView
                         android:id="@+id/settingsApplovin"

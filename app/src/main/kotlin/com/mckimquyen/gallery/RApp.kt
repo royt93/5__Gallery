@@ -2,7 +2,6 @@ package com.mckimquyen.gallery
 
 import android.app.Application
 import com.github.ajalt.reprint.core.Reprint
-import com.mckimquyen.gallery.ext.setupApplovinAd
 import com.squareup.picasso.Downloader
 import com.squareup.picasso.Picasso
 import okhttp3.Request
@@ -43,6 +42,7 @@ class RApp : Application() {
 
             override fun shutdown() {}
         }).build())
-        this.setupApplovinAd()
+        //TODO roy93~ admob
+//        this.setupApplovinAd()
     }
 }

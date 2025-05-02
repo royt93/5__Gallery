@@ -21,8 +21,8 @@ android {
         applicationId = "com.mckimquyen.gallery"
         minSdk = 23
         targetSdk = 35
-        versionName = "2025.03.23"
-        versionCode = 20250323
+        versionName = "2025.05.02"
+        versionCode = 20250502
         setProperty("archivesBaseName", "Gallery-$versionCode")
     }
 
@@ -154,7 +154,7 @@ dependencies {
     api(libs.zjupure.webpdecoder)
     api(libs.bundles.room)
     //noinspection UseTomlInstead
-    api("com.applovin:applovin-sdk:13.1.0")
+//    api("com.applovin:applovin-sdk:13.1.0")
     ksp(libs.androidx.room.compiler)
     //noinspection UseTomlInstead
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")

@@ -9,11 +9,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
-import com.applovin.mediation.MaxAd
-import com.applovin.mediation.MaxAdListener
-import com.applovin.mediation.MaxError
-import com.applovin.mediation.ads.MaxAdView
-import com.applovin.mediation.ads.MaxInterstitialAd
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mckimquyen.gallery.BuildConfig
@@ -42,7 +37,8 @@ class SettingsAct : SimpleAct() {
 
     private var mRecycleBinContentSize = 0L
     private val binding by viewBinding(ASettingsBinding::inflate)
-    private var adView: MaxAdView? = null
+    //TODO roy93~ admob banner
+//    private var adView: MaxAdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isMaterialActivity = true
@@ -59,12 +55,15 @@ class SettingsAct : SimpleAct() {
             scrollingView = binding.settingsNestedScrollview,
             toolbar = binding.settingsToolbar
         )
-        adView = this.createAdBanner(
-            logTag = MainAct::class.simpleName,
-            viewGroup = binding.flAd,
-            isAdaptiveBanner = true,
-        )
-        createAdInter()
+        //TODO roy93~ admob banner
+//        adView = this.createAdBanner(
+//            logTag = MainAct::class.simpleName,
+//            viewGroup = binding.flAd,
+//            isAdaptiveBanner = true,
+//        )
+
+        //TODO roy93~ admob inter
+//        createAdInter()
     }
 
     override fun onResume() {
@@ -75,7 +74,8 @@ class SettingsAct : SimpleAct() {
     }
 
     override fun onDestroy() {
-        binding.flAd.destroyAdBanner(adView)
+        //TODO roy93~ admob banner
+//        binding.flAd.destroyAdBanner(adView)
         super.onDestroy()
     }
 
@@ -176,9 +176,10 @@ class SettingsAct : SimpleAct() {
 
     private fun setupCustomizeColors() {
         binding.settingsColorCustomizationHolder.setOnClickListener {
-            showAd {
-                startCustomizationActivity()
-            }
+            //TODO roy93~ admob inter
+//            showAd {
+//                startCustomizationActivity()
+//            }
         }
     }
 
@@ -245,9 +246,10 @@ class SettingsAct : SimpleAct() {
             if (isRPlus() && !isExternalStorageManager()) {
                 GrantAllFilesDlg(this)
             } else {
-                showAd {
-                    startActivity(Intent(this, IncludedFoldersAct::class.java))
-                }
+                //TODO roy93~ admob inter
+//                showAd {
+//                    startActivity(Intent(this, IncludedFoldersAct::class.java))
+//                }
             }
         }
     }
@@ -1048,11 +1050,11 @@ class SettingsAct : SimpleAct() {
             }
         }
         binding.settingApplovin.setOnClickListener {
-            if (BuildConfig.DEBUG) {
-                this.showMediationDebuggerApplovin()
-            } else {
-                this.showErrorToast("This feature is only available in Debug Mode")
-            }
+//            if (BuildConfig.DEBUG) {
+//                this.showMediationDebuggerApplovin()
+//            } else {
+//                this.showErrorToast("This feature is only available in Debug Mode")
+//            }
         }
     }
 
@@ -1192,87 +1194,88 @@ class SettingsAct : SimpleAct() {
         }
     }
 
-    private var interstitialAd: MaxInterstitialAd? = null
-
-    private fun createAdInter() {
-        val enableAdInter = getString(R.string.EnableAdInter) == "true"
-        if (enableAdInter) {
-            interstitialAd = MaxInterstitialAd(getString(R.string.INTER), this)
-            interstitialAd?.let { ad ->
-                ad.setListener(object : MaxAdListener {
-                    override fun onAdLoaded(p0: MaxAd) {
-//                        logI("onAdLoaded")
-//                        retryAttempt = 0
-                    }
-
-                    override fun onAdDisplayed(p0: MaxAd) {
-//                        logI("onAdDisplayed")
-                    }
-
-                    override fun onAdHidden(p0: MaxAd) {
-//                        logI("onAdHidden")
-                        // Interstitial Ad is hidden. Pre-load the next ad
-                        interstitialAd?.loadAd()
-                    }
-
-                    override fun onAdClicked(p0: MaxAd) {
-//                        logI("onAdClicked")
-                    }
-
-                    override fun onAdLoadFailed(p0: String, p1: MaxError) {
-//                        logI("onAdLoadFailed")
-//                        retryAttempt++
-//                        val delayMillis =
-//                            TimeUnit.SECONDS.toMillis(2.0.pow(min(6, retryAttempt)).toLong())
+    //TODO roy93~ admob inter
+//    private var interstitialAd: MaxInterstitialAd? = null
 //
-//                        Handler(Looper.getMainLooper()).postDelayed(
-//                            {
-//                                interstitialAd?.loadAd()
-//                            }, delayMillis
-//                        )
-                    }
-
-                    override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
-//                        logI("onAdDisplayFailed")
-                        // Interstitial ad failed to display. We recommend loading the next ad.
-                        interstitialAd?.loadAd()
-                    }
-
-                })
-                ad.setRevenueListener {
-//                    logI("onAdDisplayed")
-                }
-
-                // Load the first ad.
-                ad.loadAd()
-            }
-        }
-    }
-
-    private fun showAd(runnable: Runnable? = null) {
-        val enableAdInter = getString(R.string.EnableAdInter) == "true"
-        if (enableAdInter) {
-            if (interstitialAd == null) {
-                runnable?.run()
-            } else {
-                interstitialAd?.let { ad ->
-                    if (ad.isReady) {
-//                        showDialogProgress()
-//                        setDelay(500.getRandomNumber() + 500) {
-//                            hideDialogProgress()
-//                            ad.showAd()
-//                            runnable?.run()
-//                        }
-                        ad.showAd()
-                        runnable?.run()
-                    } else {
-                        runnable?.run()
-                    }
-                }
-            }
-        } else {
-            Toast.makeText(this, "Applovin show ad Inter in debug mode", Toast.LENGTH_SHORT).show()
-            runnable?.run()
-        }
-    }
+//    private fun createAdInter() {
+//        val enableAdInter = getString(R.string.EnableAdInter) == "true"
+//        if (enableAdInter) {
+//            interstitialAd = MaxInterstitialAd(getString(R.string.INTER), this)
+//            interstitialAd?.let { ad ->
+//                ad.setListener(object : MaxAdListener {
+//                    override fun onAdLoaded(p0: MaxAd) {
+////                        logI("onAdLoaded")
+////                        retryAttempt = 0
+//                    }
+//
+//                    override fun onAdDisplayed(p0: MaxAd) {
+////                        logI("onAdDisplayed")
+//                    }
+//
+//                    override fun onAdHidden(p0: MaxAd) {
+////                        logI("onAdHidden")
+//                        // Interstitial Ad is hidden. Pre-load the next ad
+//                        interstitialAd?.loadAd()
+//                    }
+//
+//                    override fun onAdClicked(p0: MaxAd) {
+////                        logI("onAdClicked")
+//                    }
+//
+//                    override fun onAdLoadFailed(p0: String, p1: MaxError) {
+////                        logI("onAdLoadFailed")
+////                        retryAttempt++
+////                        val delayMillis =
+////                            TimeUnit.SECONDS.toMillis(2.0.pow(min(6, retryAttempt)).toLong())
+////
+////                        Handler(Looper.getMainLooper()).postDelayed(
+////                            {
+////                                interstitialAd?.loadAd()
+////                            }, delayMillis
+////                        )
+//                    }
+//
+//                    override fun onAdDisplayFailed(p0: MaxAd, p1: MaxError) {
+////                        logI("onAdDisplayFailed")
+//                        // Interstitial ad failed to display. We recommend loading the next ad.
+//                        interstitialAd?.loadAd()
+//                    }
+//
+//                })
+//                ad.setRevenueListener {
+////                    logI("onAdDisplayed")
+//                }
+//
+//                // Load the first ad.
+//                ad.loadAd()
+//            }
+//        }
+//    }
+//
+//    private fun showAd(runnable: Runnable? = null) {
+//        val enableAdInter = getString(R.string.EnableAdInter) == "true"
+//        if (enableAdInter) {
+//            if (interstitialAd == null) {
+//                runnable?.run()
+//            } else {
+//                interstitialAd?.let { ad ->
+//                    if (ad.isReady) {
+////                        showDialogProgress()
+////                        setDelay(500.getRandomNumber() + 500) {
+////                            hideDialogProgress()
+////                            ad.showAd()
+////                            runnable?.run()
+////                        }
+//                        ad.showAd()
+//                        runnable?.run()
+//                    } else {
+//                        runnable?.run()
+//                    }
+//                }
+//            }
+//        } else {
+//            Toast.makeText(this, "Applovin show ad Inter in debug mode", Toast.LENGTH_SHORT).show()
+//            runnable?.run()
+//        }
+//    }
 }
