@@ -21,8 +21,8 @@ android {
         applicationId = "com.mckimquyen.gallery"
         minSdk = 23
         targetSdk = 35
-        versionName = "2025.05.02"
-        versionCode = 20250502
+        versionName = "2025.05.03"
+        versionCode = 20250503
         setProperty("archivesBaseName", "Gallery-$versionCode")
     }
 
@@ -51,10 +51,19 @@ android {
     }
 
     buildTypes {
-//        debug {
+        debug {
 //            applicationIdSuffix = ".debug"
-//        }
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-3940256099942544/6300978111\"")
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"ca-app-pub-3940256099942544/1033173712\"")
+            buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"ca-app-pub-3940256099942544/9257395921\"")
+        }
         release {
+            //nho check APPLICATION_ID trong manifest
+            buildConfigField("String", "ADMOB_BANNER_ID", "\"ca-app-pub-3612191981543807/5998696431\"")
+            buildConfigField("String", "ADMOB_INTERSTITIAL_ID", "\"ca-app-pub-3612191981543807/2275073843\"")
+            buildConfigField("String", "ADMOB_APP_OPEN_ID", "\"ca-app-pub-3612191981543807/7022620604\"")
+
+            isDebuggable = false
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
@@ -155,6 +164,7 @@ dependencies {
     api(libs.bundles.room)
     //noinspection UseTomlInstead
 //    api("com.applovin:applovin-sdk:13.1.0")
+    implementation("com.google.android.gms:play-services-ads:24.2.0")
     ksp(libs.androidx.room.compiler)
     //noinspection UseTomlInstead
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
