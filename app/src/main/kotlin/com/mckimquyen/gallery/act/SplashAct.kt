@@ -4,13 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import android.util.Log
 import android.view.Display
 import android.view.WindowManager
+import androidx.lifecycle.lifecycleScope
+import com.mckimquyen.gallery.BuildConfig
 import com.mckimquyen.gallery.ext.config
 import com.mckimquyen.gallery.ext.favoritesDB
 import com.mckimquyen.gallery.ext.getFavoriteFromPath
 import com.mckimquyen.gallery.ext.mediaDB
 import com.mckimquyen.gallery.model.Favorite
+import com.mckimquyen.gallery.sdkadbmob.AdMobManager
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.fossify.commons.activities.BaseSplashActivity
 import org.fossify.commons.helpers.ensureBackgroundThread
 
@@ -53,13 +59,40 @@ class SplashAct : BaseSplashActivity() {
     }
 
     override fun initActivity() {
+        lifecycleScope.launch {
+            var hasCalledGoToMain = false
+            val job = launch {
+                delay(3_000)
+                if (!hasCalledGoToMain) {
+                    hasCalledGoToMain = true
+                    Log.d("roy93~", "goToMain #1")
+                    init()
+                }
+            }
+            AdMobManager.loadAppOpenAd(
+                context = this@SplashAct,
+                adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
+                onAdLoaded = {
+                    if (!hasCalledGoToMain) {
+                        hasCalledGoToMain = true
+                        job.cancel()
+                        Log.d("roy93~", "goToMain #2")
+                        init()
+                        AdMobManager.showAppOpenAd(this@SplashAct)
+                    }
+                },
+            )
+        }
+    }
+
+    private fun init() {
         // check if previously selected favorite items have been properly migrated into the new Favorites table
         if (config.wereFavoritesMigrated) {
-            launchActivity()
+            goToMain()
         } else {
             if (config.appRunCount == 0) {
                 config.wereFavoritesMigrated = true
-                launchActivity()
+                goToMain()
             } else {
                 config.wereFavoritesMigrated = true
                 ensureBackgroundThread {
@@ -71,14 +104,14 @@ class SplashAct : BaseSplashActivity() {
                     favoritesDB.insertAll(favorites)
 
                     runOnUiThread {
-                        launchActivity()
+                        goToMain()
                     }
                 }
             }
         }
     }
 
-    private fun launchActivity() {
+    private fun goToMain() {
         startActivity(Intent(this, MainAct::class.java))
         finish()
     }
