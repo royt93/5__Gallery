@@ -9,6 +9,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Toast
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.mckimquyen.gallery.BuildConfig
@@ -22,13 +26,14 @@ import com.mckimquyen.gallery.dlg.*
 import com.mckimquyen.gallery.ext.*
 import com.mckimquyen.gallery.helper.*
 import com.mckimquyen.gallery.model.AlbumCover
+import com.mckimquyen.gallery.sdkadbmob.AdMobManager
 import java.io.File
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.Locale
 import kotlin.system.exitProcess
 
-class SettingsAct : SimpleAct() {
+class SettingsAct : SimpleAct(), AdMobManager.InterstitialAdListener {
     companion object {
         private const val PICK_IMPORT_SOURCE_INTENT = 1
         private const val SELECT_EXPORT_FAVORITES_FILE_INTENT = 2
@@ -37,13 +42,16 @@ class SettingsAct : SimpleAct() {
 
     private var mRecycleBinContentSize = 0L
     private val binding by viewBinding(ASettingsBinding::inflate)
-    //TODO roy93~ admob banner
+    private var adView: AdView? = null
 //    private var adView: MaxAdView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         isMaterialActivity = true
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        AdMobManager.setCurrentActivity(this)
+        AdMobManager.interstitialListener = this
 
         updateMaterialActivityViews(
             mainCoordinatorLayout = binding.settingsCoordinator,
@@ -55,14 +63,19 @@ class SettingsAct : SimpleAct() {
             scrollingView = binding.settingsNestedScrollview,
             toolbar = binding.settingsToolbar
         )
-        //TODO roy93~ admob banner
+        adView = AdMobManager.loadBanner(
+            context = this,
+            adUnitId = BuildConfig.ADMOB_BANNER_ID,
+            container = binding.flAd,
+            adSize = AdSize.BANNER,
+        )
 //        adView = this.createAdBanner(
 //            logTag = MainAct::class.simpleName,
 //            viewGroup = binding.flAd,
 //            isAdaptiveBanner = true,
 //        )
 
-        //TODO roy93~ admob inter
+        AdMobManager.loadInterstitial(this, BuildConfig.ADMOB_INTERSTITIAL_ID)
 //        createAdInter()
     }
 
@@ -71,11 +84,17 @@ class SettingsAct : SimpleAct() {
         setupToolbar(binding.settingsToolbar, NavigationIcon.Arrow)
         setupSettingItems()
         rateAppInApp(BuildConfig.DEBUG)
+        adView?.resume()
+    }
+
+    override fun onPause() {
+        adView?.pause()
+        super.onPause()
     }
 
     override fun onDestroy() {
-        //TODO roy93~ admob banner
 //        binding.flAd.destroyAdBanner(adView)
+        adView?.destroy()
         super.onDestroy()
     }
 
@@ -176,7 +195,8 @@ class SettingsAct : SimpleAct() {
 
     private fun setupCustomizeColors() {
         binding.settingsColorCustomizationHolder.setOnClickListener {
-            //TODO roy93~ admob inter
+            startCustomizationActivity()
+            AdMobManager.showInterstitial(this)
 //            showAd {
 //                startCustomizationActivity()
 //            }
@@ -246,7 +266,7 @@ class SettingsAct : SimpleAct() {
             if (isRPlus() && !isExternalStorageManager()) {
                 GrantAllFilesDlg(this)
             } else {
-                //TODO roy93~ admob inter
+                startActivity(Intent(this, IncludedFoldersAct::class.java))
 //                showAd {
 //                    startActivity(Intent(this, IncludedFoldersAct::class.java))
 //                }
@@ -1194,7 +1214,27 @@ class SettingsAct : SimpleAct() {
         }
     }
 
-    //TODO roy93~ admob inter
+    override fun onAdLoaded() {
+    }
+
+    override fun onAdFailedToLoad(error: LoadAdError) {
+    }
+
+    override fun onAdShowed() {
+    }
+
+    override fun onAdDismissed() {
+    }
+
+    override fun onAdClicked() {
+    }
+
+    override fun onAdFailedToShow(error: AdError) {
+    }
+
+    override fun onAdNotAvailable() {
+    }
+
 //    private var interstitialAd: MaxInterstitialAd? = null
 //
 //    private fun createAdInter() {
