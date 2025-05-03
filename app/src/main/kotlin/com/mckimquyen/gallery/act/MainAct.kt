@@ -14,6 +14,8 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.ads.AdError
+import com.google.android.gms.ads.LoadAdError
 import com.mckimquyen.gallery.BuildConfig
 import com.mckimquyen.gallery.R
 import com.mckimquyen.gallery.adt.DirectoryAdt
@@ -29,6 +31,7 @@ import com.mckimquyen.gallery.itf.ListenerDirectoryOperations
 import com.mckimquyen.gallery.job.NewPhotoFetcher
 import com.mckimquyen.gallery.model.Directory
 import com.mckimquyen.gallery.model.Medium
+import com.mckimquyen.gallery.sdkadbmob.AdMobManager
 import org.fossify.commons.dialogs.CreateNewFolderDialog
 import org.fossify.commons.dialogs.FilePickerDialog
 import org.fossify.commons.dialogs.RadioGroupDialog
@@ -40,9 +43,8 @@ import org.fossify.commons.models.Release
 import org.fossify.commons.views.MyGridLayoutManager
 import org.fossify.commons.views.MyRecyclerView
 import java.io.*
-import kotlin.random.Random
 
-class MainAct : SimpleAct(), ListenerDirectoryOperations {
+class MainAct : SimpleAct(), ListenerDirectoryOperations, AdMobManager.InterstitialAdListener {
     companion object {
         private const val PICK_MEDIA = 2
         private const val PICK_WALLPAPER = 3
@@ -100,6 +102,9 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
             checkRecycleBinItems()
             startNewPhotoFetcher()
         }
+
+        AdMobManager.setCurrentActivity(this)
+        AdMobManager.interstitialListener = this
 
         mIsPickImageIntent = isPickImageIntent(intent)
         mIsPickVideoIntent = isPickVideoIntent(intent)
@@ -165,8 +170,8 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
                 finish()
             }
         }
-        //TODO roy93~ admob inter
 //        createAdInter()
+        AdMobManager.loadInterstitial(this, BuildConfig.ADMOB_INTERSTITIAL_ID)
     }
 
     private fun handleMediaPermissions(callback: (granted: Boolean) -> Unit) {
@@ -587,7 +592,13 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
 
     private fun launchSearchActivity() {
         hideKeyboard()
-        //TODO roy93~ admob inter
+        Intent(this, SearchAct::class.java).apply {
+            startActivity(this)
+        }
+        binding.mainMenu.postDelayed({
+            binding.mainMenu.closeSearch()
+        }, 500)
+
 //        showAd {
 //            Intent(this, SearchAct::class.java).apply {
 //                startActivity(this)
@@ -953,7 +964,13 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
     private fun itemClicked(path: String) {
         handleLockedFolderOpening(path) { success ->
             if (success) {
-                //TODO roy93~ admob inter
+                Intent(this, MediaActMediaOperations::class.java).apply {
+                    putExtra(SKIP_AUTHENTICATION, true)
+                    putExtra(DIRECTORY, path)
+                    handleMediaIntent(this)
+                }
+                AdMobManager.showInterstitial(this)
+
 //                showAd {
 //                    Intent(this, MediaActMediaOperations::class.java).apply {
 //                        putExtra(SKIP_AUTHENTICATION, true)
@@ -1616,7 +1633,27 @@ class MainAct : SimpleAct(), ListenerDirectoryOperations {
         }
     }
 
-    //TODO roy93~ admob inter
+    override fun onAdLoaded() {
+    }
+
+    override fun onAdFailedToLoad(error: LoadAdError) {
+    }
+
+    override fun onAdShowed() {
+    }
+
+    override fun onAdDismissed() {
+    }
+
+    override fun onAdClicked() {
+    }
+
+    override fun onAdFailedToShow(error: AdError) {
+    }
+
+    override fun onAdNotAvailable() {
+    }
+
 //    private var interstitialAd: MaxInterstitialAd? = null
 //
 //    private fun createAdInter() {
