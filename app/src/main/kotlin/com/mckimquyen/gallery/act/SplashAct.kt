@@ -4,11 +4,14 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
+import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Display
 import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import com.mckimquyen.gallery.BuildConfig
+import com.mckimquyen.gallery.R
 import com.mckimquyen.gallery.ext.config
 import com.mckimquyen.gallery.ext.favoritesDB
 import com.mckimquyen.gallery.ext.getFavoriteFromPath
@@ -58,31 +61,45 @@ class SplashAct : BaseSplashActivity() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
+    }
+
     override fun initActivity() {
-        lifecycleScope.launch {
-            var hasCalledGoToMain = false
-            val job = launch {
-                delay(3_000)
-                if (!hasCalledGoToMain) {
-                    hasCalledGoToMain = true
-                    Log.d("roy93~", "goToMain #1")
-                    init()
-                }
-            }
-            AdMobManager.loadAppOpenAd(
-                context = this@SplashAct,
-                adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
-                onAdLoaded = {
-                    if (!hasCalledGoToMain) {
-                        hasCalledGoToMain = true
-                        job.cancel()
-                        Log.d("roy93~", "goToMain #2")
-                        init()
-                        AdMobManager.showAppOpenAd(this@SplashAct)
-                    }
-                },
-            )
-        }
+        AdMobManager.loadAppOpenAd(
+            context = this@SplashAct,
+            adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
+            onAdLoaded = { result ->
+                Log.d("roy93~", "onAdLoaded result $result")
+                init()
+                AdMobManager.showAppOpenAd(this@SplashAct)
+            },
+        )
+//        lifecycleScope.launch {
+//            var hasCalledGoToMain = false
+//            val job = launch {
+//                delay(3_000)
+//                if (!hasCalledGoToMain) {
+//                    hasCalledGoToMain = true
+//                    Log.d("roy93~", "goToMain #1")
+//                    init()
+//                }
+//            }
+//            AdMobManager.loadAppOpenAd(
+//                context = this@SplashAct,
+//                adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
+//                onAdLoaded = {
+//                    if (!hasCalledGoToMain) {
+//                        hasCalledGoToMain = true
+//                        job.cancel()
+//                        Log.d("roy93~", "goToMain #2")
+//                        init()
+//                        AdMobManager.showAppOpenAd(this@SplashAct)
+//                    }
+//                },
+//            )
+//        }
     }
 
     private fun init() {
