@@ -67,39 +67,18 @@ class SplashAct : BaseSplashActivity() {
     }
 
     override fun initActivity() {
-        AdMobManager.loadAppOpenAd(
-            context = this@SplashAct,
-            adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
-            onAdLoaded = { result ->
-                Log.d("roy93~", "onAdLoaded result $result")
-                init()
-                AdMobManager.showAppOpenAd(this@SplashAct)
-            },
-        )
-//        lifecycleScope.launch {
-//            var hasCalledGoToMain = false
-//            val job = launch {
-//                delay(3_000)
-//                if (!hasCalledGoToMain) {
-//                    hasCalledGoToMain = true
-//                    Log.d("roy93~", "goToMain #1")
-//                    init()
-//                }
-//            }
-//            AdMobManager.loadAppOpenAd(
-//                context = this@SplashAct,
-//                adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
-//                onAdLoaded = {
-//                    if (!hasCalledGoToMain) {
-//                        hasCalledGoToMain = true
-//                        job.cancel()
-//                        Log.d("roy93~", "goToMain #2")
-//                        init()
-//                        AdMobManager.showAppOpenAd(this@SplashAct)
-//                    }
-//                },
-//            )
-//        }
+//        AdMobManager.loadAppOpenAd(
+//            context = this@SplashAct,
+//            adUnitId = BuildConfig.ADMOB_APP_OPEN_ID,
+//            onAdLoaded = { result ->
+//                Log.d("roy93~", "onAdLoaded result $result")
+//                init()
+//                AdMobManager.showAppOpenAd(this@SplashAct)
+//            },
+//        )
+        AdMobManager.initSplashScreen(activity = this, onAdLoaded = {
+            init()
+        })
     }
 
     private fun init() {
@@ -130,6 +109,11 @@ class SplashAct : BaseSplashActivity() {
 
     private fun goToMain() {
         startActivity(Intent(this, MainAct::class.java))
-        finish()
+//        finish()
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
+        // Trì hoãn finish để đợi animation hoàn tất
+        window.decorView.postDelayed({
+            finish() // Finish sau animation
+        }, 300) // delay khoảng 300ms (hoặc đúng thời gian của animation)
     }
 }
