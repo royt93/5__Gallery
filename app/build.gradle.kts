@@ -162,7 +162,7 @@ dependencies {
     api(libs.bundles.room)
     //noinspection UseTomlInstead
 //    api("com.applovin:applovin-sdk:13.1.0")
-    implementation("com.google.android.gms:play-services-ads:24.2.0")
+    implementation("com.google.android.gms:play-services-ads:24.3.0")
     ksp(libs.androidx.room.compiler)
     //noinspection UseTomlInstead
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
