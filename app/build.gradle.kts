@@ -163,6 +163,7 @@ dependencies {
     //noinspection UseTomlInstead
 //    api("com.applovin:applovin-sdk:13.1.0")
     implementation("com.google.android.gms:play-services-ads:24.3.0")
+    implementation("com.google.ads.mediation:applovin:13.2.0.1")
     ksp(libs.androidx.room.compiler)
     //noinspection UseTomlInstead
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
