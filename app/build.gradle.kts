@@ -21,8 +21,8 @@ android {
         applicationId = "com.mckimquyen.gallery"
         minSdk = 23
         targetSdk = 35
-        versionName = "2025.05.10"
-        versionCode = 20250510
+        versionName = "2025.05.27"
+        versionCode = 20250527
         setProperty("archivesBaseName", "Gallery-$versionCode")
     }
 
@@ -82,12 +82,11 @@ android {
             buildConfigField("String", "FLAVOR_buildEnv", "\"dev\"")
 //        resValue("string", "app_name", "DEV")
 
-            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
-            resValue("string", "BANNER", "d7e35316c9287aec")
-            resValue("string", "INTER", "e8473d63389dd0ae")
-
-            resValue("string", "EnableAdInter", "true")
-            resValue("string", "EnableAdBanner", "true")
+//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+//            resValue("string", "BANNER", "d7e35316c9287aec")
+//            resValue("string", "INTER", "e8473d63389dd0ae")
+//            resValue("string", "EnableAdInter", "true")
+//            resValue("string", "EnableAdBanner", "true")
         }
 
         create("prod") {
@@ -96,12 +95,11 @@ android {
             buildConfigField("String", "FLAVOR_buildEnv", "\"prod\"")
 //        resValue("string", "app_name", "PROD")
 
-            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
-            resValue("string", "BANNER", "d7e35316c9287aec")
-            resValue("string", "INTER", "e8473d63389dd0ae")
-
-            resValue("string", "EnableAdInter", "true")
-            resValue("string", "EnableAdBanner", "true")
+//            resValue("string", "SDK_KEY", "e75FnQfS9XTTqM1Kne69U7PW_MBgAnGQTFvtwVVui6kRPKs5L7ws9twr5IQWwVfzPKZ5pF2IfDa7lguMgGlCyt")
+//            resValue("string", "BANNER", "d7e35316c9287aec")
+//            resValue("string", "INTER", "e8473d63389dd0ae")
+//            resValue("string", "EnableAdInter", "true")
+//            resValue("string", "EnableAdBanner", "true")
         }
     }
 
